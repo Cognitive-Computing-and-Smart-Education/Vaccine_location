@@ -1,0 +1,88 @@
+*{
+    box-sizing: border-box;
+}
+
+#app::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+#app::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #535353;
+}
+#app::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background   : #ededed;
+}
+
+.BMap_cpyCtrl {
+    display:none;
+}
+
+.anchorBL{
+    display:none;
+}
+
+.finger{
+    cursor: pointer;
+}
+.el-header{
+    position: relative;
+    z-index: 9999;
+}
+
+.current-main-box{
+    width: 100%;
+    height: 100%;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+.clearfix:after {
+    clear: both
+}
+
+.current-card-box .el-card__header{
+    padding: 10px 20px;
+    background-color: #dfe8f1;
+}
+
+.current-card-box{
+    box-shadow: 0 1px 8px #888888;
+}
+
+.current-half-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.current-half-box .el-card{
+    width: 49%;
+}
+
+.current-half-height{
+    width: 100%;
+    height: 410px;
+}
+
+.marginTop20{
+    margin-top: 30px;
+}
+
+.current-pagination-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
