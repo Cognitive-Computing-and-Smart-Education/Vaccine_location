@@ -1,5 +1,6 @@
-from pyscipopt import Model, quicksum, multidict
+from pyscipopt import Model, quicksum
 c1= 1000
+import copy
 
 def discos_func(dis):
     if dis < 1:
@@ -11,12 +12,10 @@ def discos_func(dis):
     else:
         return 8 + 100000*(dis -3)
 
-def main_model(dis_data, people_data):
-    print(dis_data)
+def main_model(dis_data, people_data, demand_ldata, vaccine_ldata):
     model = build_model(dis_data,people_data)
-    resolve(model)
-
-
+    obj,result = resolve(model,demand_ldata, vaccine_ldata)
+    return obj,result
 
 def build_model(dis_data,people_data):
     model = Model("vaccin_plan")
@@ -40,7 +39,6 @@ def build_model(dis_data,people_data):
     # for content in x:
     #     print(dis_data[0,0])
 
-    print(float(dis_data[i][j].split(' ')[0]))
 
     model.setObjective(quicksum(x[i,j] * people_data[j] * discos_func(float(dis_data[i][j].split(' ')[0])) for (i,j) in x)
                        + c1 * (quicksum(y[i] for i in range(len(dis_data)))) ,'minimize')
@@ -50,11 +48,24 @@ def build_model(dis_data,people_data):
     return model
 
 
-def resolve(model):
+def resolve(model,demand_ldata, vaccine_ldata):
     model.optimize()
     cost = model.getObjVal()
     print("Optimal Cost:", cost)
+
+    result = []
     for v in model.getVars():
         if model.getVal(v) > 0.001:
-            print(v.name, "=", model.getVal(v))
+            if v.name.startswith('x'):
+                index_x = v.name.split('[')[1][:1]
+                index_y = v.name.split('[')[2][:1]
+                print(index_x,end= '   ')
+                print(index_y)
+                print(demand_ldata[int(index_y)][2:])
+                print(vaccine_ldata[int(index_x)][2:])
+                result.append(copy.deepcopy({'from':{'name':demand_ldata[int(index_y)][2],'location': demand_ldata[int(index_y)][4:]},
+                                                     'to':{'name':vaccine_ldata[int(index_x)][2], 'location':vaccine_ldata[int(index_x)][4:]}}))
+                print('------------------------------------分割线----------------------------------------')
+            # print(v.name, "=", model.getVal(v))
+    return model.getObjVal(),result
 
